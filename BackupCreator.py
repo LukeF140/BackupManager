@@ -61,12 +61,8 @@ def CreateBackUp(dirToBack, backUpDir):
                zipObj.write(filePath, os.path.relpath(filePath, dirToBack), zipfile.ZIP_DEFLATED)
     print("BACK UP COMPLEATED OF:  '" + dirToBack + "',  TO DIRECTORY:  '" + backUpDir + "'\n")
 
-# Main Function that runs appon opening of this file or running in the main mannager
+# Called from the main mannager
 def Main():
     backups = BackupsToCompleate()
     for k in backups:
         CreateBackUp(k, backups[k])
-
-
-# Called when this file is opened
-Main()

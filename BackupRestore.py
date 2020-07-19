@@ -14,10 +14,11 @@ def Restore(backupLoc, restoreTo):
     backupZip = zipfile.ZipFile(backupLoc)
     backupZip.extractall(restoreTo)
     backupZip.close()
-    print("RESTORED BACKUP: '" + backupLoc + "'  TO: '" + restoreTo + "\n\n") 
+    print("RESTORED BACKUP: '" + backupLoc + "'  TO: '" + restoreTo)
 
-# Called when this file opened or when called through main manager
+# Called through main manager
 def Main():
+    print ("")
     # Gets location of backup and the place to restore to
     backupLoc = input("Please Enter the Location of the backup (encluding the backupfile): ")
     restoreLoc = input("Please Enter the location to restore your files to: ")
@@ -29,6 +30,3 @@ def Main():
 
     # Calles 'Restore()' to restore folders
     Restore(backupLoc, restoreLoc + "\\" + folderName)
-
-# Called when this file is opened
-Main()
