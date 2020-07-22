@@ -10,11 +10,14 @@ import os
 # FUNCTIONS
 # Restores the Backup (backupLoc: location of the backup; restoreTo: location for the files to be restored to)
 def Restore(backupLoc, restoreTo):
-    print("RESTORING FILES")
-    backupZip = zipfile.ZipFile(backupLoc)
-    backupZip.extractall(restoreTo)
-    backupZip.close()
-    print("RESTORED BACKUP: '" + backupLoc + "'  TO: '" + restoreTo)
+    if os.path.exists(backupLoc):
+        print("RESTORING FILES")
+        backupZip = zipfile.ZipFile(backupLoc)
+        backupZip.extractall(restoreTo)
+        backupZip.close()
+        print("RESTORED BACKUP: '" + backupLoc + "'  TO: '" + restoreTo)
+    else:
+        print("ERROR: DIRECTORY '" + backupLoc + "' IS NOT FOUND")
 
 # Called through main manager
 def Main():

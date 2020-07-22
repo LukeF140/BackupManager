@@ -11,29 +11,25 @@ contin = True
 # FUNCTIONS
 def BackupList():
     backupList = {}
-    try:
-        # Get Backup File
-        backupFile = open("BackupLocs.txt", "r")
-        fileCont = backupFile.readlines()
-        backupFile.close()
-        backUpFileInfo = []
-        # Remove \n
-        for E in fileCont:
-            E = re.sub('\\n', '', E)
-            if E != ' ':
-                backUpFileInfo.append(E)
-        # Sorts out directorys into dictionary
-        for i in range(0, len(backUpFileInfo)):
-            if i%2 == 0:
-                try:
-                    backupList[backUpFileInfo[i]] = backUpFileInfo[i+1]
-                except:
-                    print("ERROR: NO DICTIONARY FOR BACKUP TO BE PLACED")
-                    return {}
-        return backupList
-    except:
-        print("NO BACKUPS TO EDIT")
-        return {}
+    # Get Backup File
+    backupFile = open("BackupLocs.txt", "r")
+    fileCont = backupFile.readlines()
+    backupFile.close()
+    backUpFileInfo = []
+    # Remove \n
+    for E in fileCont:
+        E = re.sub('\\n', '', E)
+        if E != ' ':
+            backUpFileInfo.append(E)
+    # Sorts out directorys into dictionary
+    for i in range(0, len(backUpFileInfo)):
+        if i%2 == 0:
+            try:
+                backupList[backUpFileInfo[i]] = backUpFileInfo[i+1]
+            except:
+                print("ERROR: NO DICTIONARY FOR BACKUP TO BE PLACED")
+                return {}
+    return backupList
 
 def Help():
     print("COMMANDS")
@@ -62,23 +58,43 @@ def RemoveBackup():
         for i in range(0, len(backupPaths)):
             print(str(i+1) + ". " + backupPaths[i])
 
-        remove = int(input("Which backup do you want to remove (enter the number): ")) - 1
-        
-        backupFile = open("BackupLocs.txt", "r")
-        lines = backupFile.readlines()
-        backupFile.close()
-        
-        del lines[remove * 2 + 1]
-        del lines[remove * 2]
+        try:
+            remove = int(input("Which backup do you want to remove (enter the number): ")) - 1
+        except:
+            print ("ERROR: Number must be an Integer")
+            return
+            
+        if remove >= 0 and remove < len(backupPaths):
+            backupFile = open("BackupLocs.txt", "r")
+            lines = backupFile.readlines()
+            backupFile.close()
+            
+            del lines[remove * 2 + 1]
+            del lines[remove * 2]
 
-        backupFile = open("BackupLocs.txt", "w")
-        for line in lines:
-            backupFile.write(line)
-        backupFile.close()
-        
-        print ("REMOVED: '" + backupPaths[remove] + "' BACKUP")
+            backupFile = open("BackupLocs.txt", "w")
+            for line in lines:
+                backupFile.write(line)
+            backupFile.close()
+            
+            print ("REMOVED: '" + backupPaths[remove] + "' BACKUP")
+        else:
+            print("ERROR: NUMBER ENTERED IS TOO LARGE OR SMALL")
     else:
         print ("THERE ARE NO BACKUP SET UP TO REMOVE")
+
+def List():
+    backupList = BackupList()
+    backupPaths = []
+    if backupList != {}:
+        for k in backupList:
+            backupPaths.append(k)
+
+        print("PATHS TO BE BACKED UP")
+        for i in range(0, len(backupPaths)):
+            print(str(i+1) + ". " + backupPaths[i])
+    else:
+        print("NO BACKUP PATHS")
 
     
 # MAIN
@@ -91,9 +107,11 @@ while contin:
         BackupCreator.Main()
     elif whatDo == "RESTORE":
         BackupRestore.Main()
-    elif whatDo == "ADD BACKUP" or whatDo == "ADD BACK UP":
+    elif whatDo == "LIST" or whatDo == "LIST BACKUP" or whatDo == "LIST BACK UP":
+        List()
+    elif whatDo == "ADD" or whatDo == "ADD BACKUP" or whatDo == "ADD BACK UP":
         AddBackup()
-    elif whatDo == "REMOVE BACKUP" or whatDo == "REMOVE BACK UP":
+    elif whatDo == "REMOVE" or whatDo == "REMOVE BACKUP" or whatDo == "REMOVE BACK UP":
         RemoveBackup()
     elif whatDo == "EXIT":
         print("Thank You for using BACKUP MANAGER")
