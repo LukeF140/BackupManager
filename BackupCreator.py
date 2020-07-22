@@ -47,22 +47,25 @@ def BackupsToCompleate():
 # Creates A BackUp (dirToBack: Directory to be backed up; backUpDir: Directory for the backup to be placed)
 def CreateBackUp(dirToBack, backUpDir):
     if os.path.exists(dirToBack):
-        # Create Name of Backup Folder
-        backUpDir = backUpDir + "\\" + basename(dirToBack) + "_BACKUP--" + now.strftime("%d-%m-%Y_%H-%M") +".zip"
-        print("\nBACKING UP DIRECTORY:  '" + dirToBack + "',  TO DIRECTORY:  '" + backUpDir + "'")
-        # Create a ZipFile object
-        with zipfile.ZipFile(backUpDir, 'w') as zipObj:
-           # Go through all files in a Directory
-           for folderName, subfolders, filenames in os.walk(dirToBack):
-               for filename in filenames:
-                   # Create compleate file path for file
-                   filePath = os.path.join(folderName, filename)
-                   print("BACKING UP:", filePath)
-                   # Add file to zip file
-                   zipObj.write(filePath, os.path.relpath(filePath, dirToBack), zipfile.ZIP_DEFLATED)
-        print("BACK UP COMPLEATED OF:  '" + dirToBack + "',  TO DIRECTORY:  '" + backUpDir + "'\n")
+        if os.path.exists(backUpDir):
+            # Create Name of Backup Folder
+            backUpDir = backUpDir + "\\" + basename(dirToBack) + "_BACKUP--" + now.strftime("%d-%m-%Y_%H-%M") +".zip"
+            print("\nBACKING UP DIRECTORY:  '" + dirToBack + "',  TO DIRECTORY:  '" + backUpDir + "'")
+            # Create a ZipFile object
+            with zipfile.ZipFile(backUpDir, 'w') as zipObj:
+               # Go through all files in a Directory
+               for folderName, subfolders, filenames in os.walk(dirToBack):
+                   for filename in filenames:
+                       # Create compleate file path for file
+                       filePath = os.path.join(folderName, filename)
+                       print("BACKING UP:", filePath)
+                       # Add file to zip file
+                       zipObj.write(filePath, os.path.relpath(filePath, dirToBack), zipfile.ZIP_DEFLATED)
+            print("BACK UP COMPLEATED OF:  '" + dirToBack + "',  TO DIRECTORY:  '" + backUpDir + "'\n")
+        else:
+            print("ERROR: DIRECTORY '" + backUpDir + "' WAS NOT FOUND")
     else:
-        print("ERROR: Directory '" + dirToBack + "' was not found")
+        print("ERROR: DIRECTORY '" + dirToBack + "' WAS NOT FOUND")
 
 # Called from the main mannager
 def Main():
